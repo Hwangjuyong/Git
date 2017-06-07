@@ -1,0 +1,81 @@
+@model PaginatedList<ContosoUniversity.Models.Article>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<form asp-action="Index" method="get">
+    <div class="form-action no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="search" class="btn btn-default" /> | <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>No</p>
+            </th>
+            <th>
+                <p>Title</p>
+            </th>
+            <th>
+                <p>CId</p>
+            </th>
+            <th>
+                <p>CDt</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Title)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Writer.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cDate)
+            </td>            
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"   
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+@for (int i = 1; i < Model.TotalPages+1; i++)
+{
+    <a asp-action="Index"  
+   asp-route-page="@(i)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+}
+<a asp-action="Index"  
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

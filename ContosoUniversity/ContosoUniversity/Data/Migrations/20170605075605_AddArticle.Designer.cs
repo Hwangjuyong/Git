@@ -8,9 +8,10 @@ using ContosoUniversity.Data;
 namespace ContosoUniversity.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170605075605_AddArticle")]
+    partial class AddArticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -190,28 +191,6 @@ namespace ContosoUniversity.Data.Migrations
                     b.HasKey("InstructorID");
 
                     b.ToTable("OfficeAssignments");
-                });
-
-            modelBuilder.Entity("ContosoUniversity.Models.Reply", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ArticleID");
-
-                    b.Property<string>("Content");
-
-                    b.Property<string>("WriterID");
-
-                    b.Property<DateTime>("cDate");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ArticleID");
-
-                    b.HasIndex("WriterID");
-
-                    b.ToTable("Reply");
                 });
 
             modelBuilder.Entity("ContosoUniversity.Models.Student", b =>
@@ -395,18 +374,6 @@ namespace ContosoUniversity.Data.Migrations
                         .WithOne("OfficeAssignment")
                         .HasForeignKey("ContosoUniversity.Models.OfficeAssignment", "InstructorID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ContosoUniversity.Models.Reply", b =>
-                {
-                    b.HasOne("ContosoUniversity.Models.Article", "Article")
-                        .WithMany("Replys")
-                        .HasForeignKey("ArticleID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ContosoUniversity.Models.ApplicationUser", "Writer")
-                        .WithMany()
-                        .HasForeignKey("WriterID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

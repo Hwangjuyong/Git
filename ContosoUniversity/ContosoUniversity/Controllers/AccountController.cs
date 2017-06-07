@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using ContosoUniversity.Models;
+using ContosoUniversity.Models.AccountViewModels;
+using ContosoUniversity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ContosoUniversity.Models;
-using ContosoUniversity.Models.AccountViewModels;
-using ContosoUniversity.Services;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Controllers
 {

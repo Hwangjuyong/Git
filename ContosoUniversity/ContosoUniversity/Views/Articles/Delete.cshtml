@@ -1,4 +1,4 @@
-@model ContosoUniversity.Models.Course
+@model ContosoUniversity.Models.Article
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,16 +8,16 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Course</h4>
+    <h4>Article</h4>
     <hr />
-    <dl class="dl-horizontal">      
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
         <dt>
-            @Html.DisplayNameFor(model => model.CourseID)
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CourseID)
+            @Html.DisplayFor(model => model.Content)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -25,16 +25,16 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Credits)
+            @Html.DisplayNameFor(model => model.cDate)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Credits)
+            @Html.DisplayFor(model => model.cDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Department)
+            @Html.DisplayNameFor(model => model.Writer)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Department.Name)
+            @Html.DisplayFor(model => model.Writer.Id)
         </dd>
     </dl>
     

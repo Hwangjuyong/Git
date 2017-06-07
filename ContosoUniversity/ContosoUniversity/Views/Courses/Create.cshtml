@@ -10,6 +10,7 @@
     <div class="form-horizontal">
         <h4>Course</h4>
         <hr />
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="CourseID" class="col-md-2 control-label"></label>
@@ -24,7 +25,7 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-        </div>
+        </div>      
         <div class="form-group">
             <label asp-for="Credits" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -33,9 +34,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="DepartmentID" class="col-md-2 control-label"></label>
+            <label asp-for="Department" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="DepartmentID" class ="form-control" asp-items="ViewBag.DepartmentID"></select>
+                <select asp-for="DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID">
+                    <option value="">-- Select Department --</option>
+                </select>
+                <span asp-validation-for="DepartmentID" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
