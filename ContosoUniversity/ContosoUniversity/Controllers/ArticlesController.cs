@@ -45,6 +45,9 @@ namespace ContosoUniversity.Controllers
             {
                 articles = articles.Where(s => s.Title.Contains(searchString) || s.Content.Contains(searchString));
             }
+
+            articles = articles.OrderByDescending(s => s.cDate);
+            
             
             int pageSize = 4;
             return View(await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), page ?? 1, pageSize));
@@ -61,8 +64,9 @@ namespace ContosoUniversity.Controllers
 
             var article = await _context.Article
                 .Include(a => a.Writer)               
-                .Include(i => i.Replys).ThenInclude(i => i.Writer)                    
+                .Include(i => i.Replys).ThenInclude(i => i.Writer)                                   
                 .SingleOrDefaultAsync(m => m.ID == id);
+            
             if (article == null)
             {
                 return NotFound();
@@ -128,13 +132,13 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,WriterID,Content,Title,cDate")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Content,Title,cDate,WriterID")] Article article)
         {
             if (id != article.ID)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 try
@@ -223,12 +227,22 @@ namespace ContosoUniversity.Controllers
 
         [HttpPost, ActionName("DeleteComment")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComment(int id)
+        public async Task<IActionResult> DeleteComment(int id, int articleId)
         {
             var reply = await _context.Reply.SingleOrDefaultAsync(m => m.ID == id);
+            
             _context.Reply.Remove(reply);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details");
+            return RedirectToAction("Details/" + articleId);
+        }
+
+        private bool IsAuthor(string id)
+        {            
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == id)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

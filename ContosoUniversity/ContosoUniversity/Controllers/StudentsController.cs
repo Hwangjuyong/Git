@@ -1,8 +1,13 @@
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,10 +16,12 @@ namespace ContosoUniversity.Controllers
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _environment;
 
-        public StudentsController(ApplicationDbContext context)
+        public StudentsController(ApplicationDbContext context, IHostingEnvironment environment)
         {
-            _context = context;    
+            _context = context;
+            _environment = environment;
         }
 
         // GET: Students
@@ -77,9 +84,10 @@ namespace ContosoUniversity.Controllers
             var student = await _context.Students
                 .Include(s => s.Enrollments)
                 .ThenInclude(e => e.Course)
+                .Include(f => f.Files)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
-
+            
             if (student == null)
             {
                 return NotFound();
@@ -99,17 +107,34 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student)
+        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student, IFormFile upload)
             
         {
+            var uploads = Path.Combine(_environment.WebRootPath, "uploads");
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (upload != null && upload.Length > 0)
+                    {
+                        var avatar = new Models.File
+                        {
+                            FileName = System.IO.Path.GetFileName(upload.FileName),
+                            FileType = FileType.Avatar,
+                            ContentType = upload.ContentType
+                        };
+                        var reader = new BinaryReader(upload.OpenReadStream());
+                                                
+                            avatar.Content = reader.ReadBytes((int)upload.Length);                            
+                        
+                        student.Files = new List<Models.File> { avatar };
+                    }
+                }
+
                     _context.Add(student);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Index");
-                }
+                
             }
             catch (DbUpdateException)
             {

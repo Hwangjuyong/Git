@@ -10,6 +10,15 @@
     <h4>Student</h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (Model.Files.Any(f => f.FileType == FileType.Avatar))
+        {
+            <dt>
+                Avatar
+            </dt>
+            <dd>
+                <img src="~/Files?id=@Model.Files.First(f => f.FileType == FileType.Avatar).FileId" alt="avatar" />
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.LastName)
         </dt>

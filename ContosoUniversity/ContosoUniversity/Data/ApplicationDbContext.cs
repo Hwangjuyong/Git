@@ -35,5 +35,7 @@ namespace ContosoUniversity.Data
         public DbSet<CourseAssignment> CourseAssignments { get; set; }
         public DbSet<ContosoUniversity.Models.Article> Article { get; set; }
         public DbSet<ContosoUniversity.Models.Reply> Reply { get; set; }
+        public DbSet<ContosoUniversity.Models.Contact> Contact { get; set; }
+        public DbSet<File> Files { get; set; }
     }
 }

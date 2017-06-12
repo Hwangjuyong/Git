@@ -62,29 +62,28 @@
                 <td>
                     @item.Content
                 </td>
-                <td>
-                    <a asp-action="EditComment" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="DeleteComment" asp-route-id="@item.ID">Delete</a>
+                <td>                    
+                    <form asp-action="DeleteComment">
+                        <div class="form-actions no-color">
+                            <input type="hidden" value="@item.ID" name="id"/>
+                            <input type="hidden" value="@Model.ID" name="articleId" />
+                            <input type="submit" value="Delete" class="btn btn-default btn-xs"  /> |                            
+                        </div>
+                    </form>
                 </td>
             </tr>
         }
     </table>
 }
 <form asp-action="AddComment">
-        <div class="form-group">           
-            <div class="col-md-10">
-                <input type="text" name="Comment" class="form-control">             
-                <input type="hidden" name="id" value="@Model.ID" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-
-    </div>
+        <div class="form-group">                      
+                <input type="text" name="Comment" class="form-control">
+           
+                   
+                    <input type="hidden" name="id" value="@Model.ID" />               
+                    <input type="submit" value="Save" class="btn btn-default" />                
+            
+        </div> 
 </form>
 
 

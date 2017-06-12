@@ -9,9 +9,10 @@ using ContosoUniversity.Models;
 namespace ContosoUniversity.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170609023307_TestAuthorizaion2")]
+    partial class TestAuthorizaion2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -184,30 +185,6 @@ namespace ContosoUniversity.Data.Migrations
                     b.HasIndex("StudentID");
 
                     b.ToTable("Enrollments");
-                });
-
-            modelBuilder.Entity("ContosoUniversity.Models.File", b =>
-                {
-                    b.Property<int>("FileId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<byte[]>("Content");
-
-                    b.Property<string>("ContentType")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("FileName")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("FileType");
-
-                    b.Property<int>("PersonId");
-
-                    b.HasKey("FileId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("ContosoUniversity.Models.Instructor", b =>
@@ -437,14 +414,6 @@ namespace ContosoUniversity.Data.Migrations
                     b.HasOne("ContosoUniversity.Models.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ContosoUniversity.Models.File", b =>
-                {
-                    b.HasOne("ContosoUniversity.Models.Student", "Person")
-                        .WithMany("Files")
-                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
